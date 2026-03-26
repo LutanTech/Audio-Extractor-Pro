@@ -1,0 +1,590 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Audio Extractor Pro 🔥</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        :root {
+            --bg-deep: #020617;
+            --bg-card: #0f172a;
+            --accent-primary: #f43f5e;
+            --accent-secondary: #fb7185;
+            --text-bright: #ffffff;
+            --text-dim: #94a3b8;
+            --border-glow: rgba(244, 63, 94, 0.2);
+            --success: #10b981;
+            --danger: #ef4444;
+            --panel-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            background-color: var(--bg-deep);
+            background-image: 
+                radial-gradient(at 0% 0%, rgba(244, 63, 94, 0.05) 0px, transparent 50%),
+                radial-gradient(at 100% 100%, rgba(99, 102, 241, 0.05) 0px, transparent 50%);
+            min-height: 100vh;
+            color: var(--text-bright);
+            font-family: 'Inter', -apple-system, system-ui, sans-serif;
+            line-height: 1.6;
+            padding: 3rem 1rem;
+        }
+
+        .container {
+            max-width: 850px;
+            margin: 0 auto;
+        }
+
+        header {
+            display: flex;
+            flex-direction: column;
+            gap: 2rem;
+            margin-bottom: 3rem;
+        }
+
+        @media (min-width: 768px) {
+            header {
+                flex-direction: row;
+                align-items: center;
+                justify-content: space-between;
+            }
+        }
+
+        .logo-group h1 {
+            font-size: 2.2rem;
+            font-weight: 900;
+            letter-spacing: -0.05em;
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        .logo-svg {
+            width: 48px;
+            height: 48px;
+            fill: var(--accent-primary);
+            filter: drop-shadow(0 0 8px var(--border-glow));
+        }
+
+        .logo-text-alt {
+            background: linear-gradient(to right, var(--accent-primary), var(--accent-secondary));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .subtitle {
+            color: var(--text-dim);
+            font-size: 1rem;
+            margin-top: 0.5rem;
+            font-weight: 500;
+        }
+
+        .btn-main-upload {
+            background: var(--accent-primary);
+            color: white;
+            padding: 0.875rem 2rem;
+            border-radius: 12px;
+            font-weight: 700;
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            cursor: pointer;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            border: none;
+            box-shadow: 0 10px 20px -5px rgba(244, 63, 94, 0.3);
+        }
+
+        .btn-main-upload:hover {
+            background: var(--accent-secondary);
+            transform: translateY(-2px);
+            box-shadow: 0 15px 30px -5px rgba(244, 63, 94, 0.4);
+        }
+
+        #dropZone {
+            background: var(--bg-card);
+            border: 2px dashed #334155;
+            border-radius: 24px;
+            padding: 4rem 2rem;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.4s;
+            margin-bottom: 2.5rem;
+            position: relative;
+            overflow: hidden;
+        }
+
+        #dropZone.dragover {
+            border-color: var(--accent-primary);
+            background: rgba(244, 63, 94, 0.03);
+            transform: scale(1.01);
+        }
+
+        .drop-icon {
+            font-size: 3.5rem;
+            background: linear-gradient(to bottom, #475569, #1e293b);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            margin-bottom: 1.5rem;
+        }
+
+        .drop-title {
+            font-size: 1.25rem;
+            font-weight: 700;
+            color: var(--text-bright);
+        }
+
+        .drop-hint {
+            color: var(--text-dim);
+            margin-top: 0.5rem;
+            font-size: 0.875rem;
+        }
+
+        .file-stack {
+            display: flex;
+            flex-direction: column;
+            gap: 1.25rem;
+        }
+
+        .file-card {
+            background: var(--bg-card);
+            border: 1px solid #1e293b;
+            border-radius: 20px;
+            padding: 1.5rem;
+            position: relative;
+            box-shadow: var(--panel-shadow);
+            transition: all 0.3s;
+        }
+
+        .file-card:hover {
+            border-color: #334155;
+        }
+
+        .file-top {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            margin-bottom: 1.5rem;
+        }
+
+        .file-meta {
+            display: flex;
+            gap: 1.25rem;
+            align-items: center;
+        }
+
+        .file-type-badge {
+            width: 3.5rem;
+            height: 3.5rem;
+            background: #1e293b;
+            border-radius: 16px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--accent-primary);
+            font-size: 1.5rem;
+        }
+
+        .file-details h3 {
+            font-size: 1.125rem;
+            font-weight: 700;
+            max-width: 300px;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+
+        .file-details span {
+            font-size: 0.813rem;
+            color: var(--text-dim);
+            font-weight: 600;
+        }
+
+        .btn-close {
+            background: rgba(255, 255, 255, 0.05);
+            border: none;
+            color: var(--text-dim);
+            width: 2rem;
+            height: 2rem;
+            border-radius: 50%;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.2s;
+        }
+
+        .btn-close:hover {
+            background: var(--danger);
+            color: white;
+        }
+
+        .progress-track {
+            width: 100%;
+            height: 6px;
+            background: #1e293b;
+            border-radius: 10px;
+            margin-bottom: 1.5rem;
+            overflow: hidden;
+        }
+
+        .progress-fill {
+            height: 100%;
+            width: 0%;
+            background: linear-gradient(to right, var(--accent-primary), var(--accent-secondary));
+            box-shadow: 0 0 15px var(--border-glow);
+            transition: width 0.3s ease;
+        }
+
+        .settings-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+            gap: 1rem;
+            align-items: flex-end;
+        }
+
+        .field-group {
+            display: flex;
+            flex-direction: column;
+            gap: 0.5rem;
+        }
+
+        .field-label {
+            font-size: 0.688rem;
+            font-weight: 800;
+            text-transform: uppercase;
+            color: var(--text-dim);
+            letter-spacing: 0.1em;
+        }
+
+        .styled-select {
+            background: #1e293b;
+            border: 1px solid #334155;
+            color: var(--text-bright);
+            padding: 0.625rem 0.875rem;
+            border-radius: 10px;
+            font-size: 0.875rem;
+            font-weight: 600;
+            outline: none;
+            width: 100%;
+            cursor: pointer;
+        }
+
+        .styled-select:focus {
+            border-color: var(--accent-primary);
+        }
+
+        .btn-execute {
+            background: #334155;
+            color: #94a3b8;
+            border: none;
+            padding: 0.75rem 1.5rem;
+            border-radius: 12px;
+            font-weight: 700;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.5rem;
+            transition: all 0.3s;
+            height: 42px;
+        }
+
+        .btn-execute:not(:disabled) {
+            background: var(--accent-primary);
+            color: white;
+        }
+
+        .btn-execute:not(:disabled):hover {
+            background: var(--accent-secondary);
+            transform: scale(1.02);
+        }
+
+        .btn-active {
+            background: var(--accent-primary) !important;
+            color: white !important;
+        }
+
+        .btn-done {
+            background: var(--success) !important;
+            color: white !important;
+        }
+
+        .spin {
+            animation: rotate 1s linear infinite;
+        }
+
+        @keyframes rotate {
+            from { transform: rotate(0deg); }
+            to { transform: rotate(360deg); }
+        }
+
+        .hidden { display: none; }
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        <header>
+            <div class="logo-group">
+                <h1>
+                    <svg class="logo-svg" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
+                        <path d="M49 93a44 44 0 1 1 0-88 44 44 0 0 1 0 88Zm0-84a40 40 0 1 0 0 80 40 40 0 0 0 0-80Z"/>
+                        <path d="M51 28.5V47H71v2l-32 29v-2.5V57h-20v-2l32-26.5Z"/>
+                        <path d="M50 49a1 1 0 1 1-2 0 1 1 0 0 1 2 0Zm0 2a1 1 0 1 1-2 0 1 1 0 0 1 2 0Zm0 2a1 1 0 1 1-2 0 1 1 0 0 1 2 0Zm0 2a1 1 0 1 1-2 0 1 1 0 0 1 2 0Z"/>
+                    </svg>
+                    Audio <span class="logo-text-alt">Extractor Pro</span>
+                </h1>
+                <p class="subtitle">Next-gen audio extraction utility.</p>
+            </div>
+            
+            <label>
+                <input type="file" id="fileInput" multiple class="hidden">
+                <div class="btn-main-upload">
+                    <i class="fas fa-plus"></i>
+                    Upload New
+                </div>
+            </label>
+        </header>
+
+        <div id="dropZone">
+            <i class="fas fa-layer-group drop-icon"></i>
+            <p class="drop-title">Drop video assets here</p>
+            <p class="drop-hint">HEVC, H.264, VP9 and more supported (Max 512MB)</p>
+        </div>
+
+        <div id="fileList" class="file-stack"></div>
+    </div>
+
+    <script>
+        const baseUrl = "http://localhost:5000";
+        const CHUNK_SIZE = 1 * 1024 * 1024;
+        const dropZone = document.getElementById('dropZone');
+        const fileInput = document.getElementById('fileInput');
+        const fileList = document.getElementById('fileList');
+
+        const activeTasks = new Map();
+
+        fileInput.addEventListener('change', handleFiles);
+        dropZone.addEventListener('click', () => fileInput.click());
+
+        dropZone.addEventListener('dragover', (e) => { 
+            e.preventDefault(); 
+            dropZone.classList.add('dragover'); 
+        });
+
+        dropZone.addEventListener('dragleave', () => {
+            dropZone.classList.remove('dragover');
+        });
+
+        dropZone.addEventListener('drop', (e) => {
+            e.preventDefault();
+            dropZone.classList.remove('dragover');
+            handleFiles({ target: { files: e.dataTransfer.files } });
+        });
+
+        function handleFiles(e) {
+            for (const file of e.target.files) {
+                const id = crypto.randomUUID();
+                createUI(id, file);
+                uploadFile(id, file);
+            }
+        }
+
+        function createUI(id, file) {
+            const div = document.createElement('div');
+            div.id = `file-${id}`;
+            div.className = 'file-card';
+            
+            const sizeMB = (file.size / (1024 * 1024)).toFixed(1);
+            
+            div.innerHTML = `
+                <div class="file-top">
+                    <div class="file-meta">
+                        <div class="file-type-badge">
+                            <i class="fas fa-film"></i>
+                        </div>
+                        <div class="file-details">
+                            <h3 title="${file.name}">${file.name}</h3>
+                            <span id="meta-${id}">${sizeMB} MB &bull; Video Stream</span>
+                        </div>
+                    </div>
+                    <button onclick="cancelTask('${id}')" class="btn-close" title="Cancel and remove">
+                        <i class="fas fa-times"></i>
+                    </button>
+                </div>
+
+                <div class="progress-track">
+                    <div id="progress-${id}" class="progress-fill"></div>
+                </div>
+
+                <div class="settings-grid">
+                    <div class="field-group">
+                        <label class="field-label">Encoding</label>
+                        <select id="format-${id}" class="styled-select">
+                            <option value="mp3">MP3 High</option>
+                            <option value="wav">WAV Master</option>
+                            <option value="ogg">OGG Vorbis</option>
+                            <option value="flac">FLAC Lossless</option>
+                        </select>
+                    </div>
+
+                    <div class="field-group">
+                        <label class="field-label">Density</label>
+                        <select id="bitrate-${id}" class="styled-select">
+                            <option value="128k">128 kbps</option>
+                            <option value="192k">192 kbps</option>
+                            <option value="256k" selected>256 kbps</option>
+                            <option value="320k">320 kbps</option>
+                        </select>
+                    </div>
+
+                    <div class="field-group">
+                        <label class="field-label">Frequency</label>
+                        <select id="sample-${id}" class="styled-select">
+                            <option value="44100">44.1 kHz</option>
+                            <option value="48000">48.0 kHz</option>
+                        </select>
+                    </div>
+
+                    <button id="btn-${id}" onclick="startExtract('${id}', '${file.name}')" disabled class="btn-execute">
+                        <span class="status-icon"><i class="fas fa-cloud-upload-alt"></i></span>
+                        <span class="btn-text">Uploading</span>
+                    </button>
+                </div>
+            `;
+            fileList.appendChild(div);
+        }
+
+        async function uploadFile(id, file) {
+            const totalChunks = Math.ceil(file.size / CHUNK_SIZE);
+            const progressBar = document.getElementById(`progress-${id}`);
+            const controller = new AbortController();
+            activeTasks.set(id, { controller, type: 'upload' });
+            
+            try {
+                for (let i = 0; i < totalChunks; i++) {
+                    if (!activeTasks.has(id)) return;
+
+                    const chunk = file.slice(i * CHUNK_SIZE, (i + 1) * CHUNK_SIZE);
+                    const formData = new FormData();
+                    formData.append("chunk", chunk);
+                    formData.append("file_id", id);
+                    formData.append("index", i);
+
+                    await fetch(`${baseUrl}/upload_chunk`, { 
+                        method: "POST", 
+                        body: formData,
+                        signal: controller.signal
+                    });
+
+                    const percent = ((i + 1) / totalChunks) * 100;
+                    progressBar.style.width = percent + "%";
+                }
+
+                if (!activeTasks.has(id)) return;
+                
+                const btn = document.getElementById(`btn-${id}`);
+                btn.disabled = false;
+                btn.querySelector('.status-icon').innerHTML = '<i class="fas fa-bolt"></i>';
+                btn.querySelector('.btn-text').innerText = 'Extract';
+                activeTasks.get(id).type = 'ready';
+
+            } catch (err) {
+                if (err.name === 'AbortError') return;
+                progressBar.style.background = 'var(--danger)';
+            }
+        }
+
+        async function startExtract(id, filename) {
+            const btn = document.getElementById(`btn-${id}`);
+            const format = document.getElementById(`format-${id}`).value;
+            const bitrate = document.getElementById(`bitrate-${id}`).value;
+            const sampleRate = document.getElementById(`sample-${id}`).value;
+
+            btn.disabled = true;
+            btn.classList.add('btn-active');
+            btn.innerHTML = '<i class="fas fa-sync-alt spin"></i> Processing';
+            
+            if (activeTasks.has(id)) {
+                activeTasks.get(id).type = 'processing';
+            }
+
+            try {
+                await fetch(`${baseUrl}/extract`, {
+                    method: "POST",
+                    headers: {"Content-Type": "application/json"},
+                    body: JSON.stringify({
+                        file_id: id,
+                        filename: filename,
+                        format: format,
+                        bitrate: bitrate,
+                        sample_rate: sampleRate
+                    })
+                });
+                trackProgress(id, format);
+            } catch (err) {
+                btn.innerHTML = '<i class="fas fa-exclamation-triangle"></i> Error';
+            }
+        }
+
+        function trackProgress(id, format) {
+            const progressBar = document.getElementById(`progress-${id}`);
+            const interval = setInterval(async () => {
+                if (!activeTasks.has(id)) {
+                    clearInterval(interval);
+                    return;
+                }
+
+                try {
+                    const res = await fetch(`${baseUrl}/progress/${id}`);
+                    const data = await res.json();
+
+                    progressBar.style.width = data.progress + "%";
+
+                    if (data.progress >= 100) {
+                        clearInterval(interval);
+                        const btn = document.getElementById(`btn-${id}`);
+                        btn.disabled = false;
+                        btn.classList.remove('btn-active');
+                        btn.classList.add('btn-done');
+                        btn.innerHTML = '<i class="fas fa-cloud-download-alt"></i> Download';
+                        btn.onclick = () => window.location.href = `${baseUrl}/download/${id}.${format}`;
+                        activeTasks.get(id).type = 'done';
+                    }
+                } catch (e) {
+                    clearInterval(interval);
+                }
+            }, 1000);
+            
+            if (activeTasks.has(id)) {
+                activeTasks.get(id).interval = interval;
+            }
+        }
+
+        async function cancelTask(id) {
+            const task = activeTasks.get(id);
+            if (task) {
+                if (task.controller) task.controller.abort();
+                if (task.interval) clearInterval(task.interval);
+                
+                fetch(`${baseUrl}/cancel/${id}`, { method: 'POST' }).catch(() => {});
+                activeTasks.delete(id);
+            }
+
+            const el = document.getElementById(`file-${id}`);
+            if (el) {
+                el.style.opacity = '0';
+                el.style.transform = 'translateY(10px)';
+                setTimeout(() => el.remove(), 300);
+            }
+        }
+    </script>
+</body>
+</html>
